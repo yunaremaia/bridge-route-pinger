@@ -1,0 +1,24 @@
+{
+  "name": "bridge-route-pinger",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "type": "module",
+  "dependencies": {
+    "@hono/node-server": "^2.0.12",
+    "@hono/zod-openapi": "^1.5.1",
+    "@lucid-dreams/agent-kit": "^0.2.24",
+    "hono": "^4.12.32",
+    "x402-hono": "^1.2.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.2",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
+  }
+}
