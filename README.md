@@ -1,11 +1,35 @@
+# Bridge Route Pinger
 
+x402 agent that fetches live bridge quotes from Across and Hop for token transfers across EVM chains, returning fees, ETAs, and requirements.
 
-## Funding
+## Bounty
 
-If you find this agent useful, consider supporting its development:
+Daydreams AI Agent Bounties — **#10 Bridge Route Pinger** ($1,000)
 
-- **Solana** (USDC/SOL): `DGCs31pNhFWbYRf6CoVxhriJ5DXF1Bq31yY7Jg416EU5`
-- **Ethereum** (EVM): `0x61090c6e6fbdaee9d695c6d164a3ead268aea4ac`
+## What it does
 
-> All donations are automatically converted to USDC on Solana. 50% supports ongoing
-> development and infrastructure; 50% is shared with the maintainers.
+- Queries Across API (token address-based) and Hop API (chain slug-based)
+- Returns fee in USD and estimated time for each bridge route
+- Aggregates and sorts routes by cost and speed
+- Reports additional requirements (gas tokens, etc.)
+
+## Deploy
+
+- **URL**: https://bridge-route-pinger-phi.vercel.app
+- **Endpoint**: `POST /entrypoints/bridge/invoke`
+- **Input**: `{ "token": "USDC", "amount": "1000000", "fromChain": "ethereum", "toChain": "arbitrum" }`
+- **x402**: Active — returns 402 without payment
+
+## Tests
+
+```bash
+npm run test    # vitest: 18/18 passing
+npm run build   # tsc: clean
+```
+
+## Tech Stack
+
+- TypeScript + Hono + @lucid-dreams/agent-kit
+- x402 payment middleware
+- Across API + Hop API
+- vitest
