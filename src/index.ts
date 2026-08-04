@@ -1,5 +1,4 @@
 import { createAgentApp } from "@lucid-dreams/agent-kit";
-import { paymentMiddleware } from "x402-hono";
 import { z } from "zod";
 import { buildQuote } from "./lib/bridge-fetchers.js";
 import { fetchAllBridgeRoutes } from "./lib/bridge-fetchers.js";
@@ -18,22 +17,23 @@ function isSupportedChain(chain: string): boolean {
   return SUPPORTED_CHAINS.includes(chain.toLowerCase());
 }
 
-const { app, addEntrypoint } = createAgentApp({
+const { app, addEntrypoint }: { app: any; addEntrypoint: any } = createAgentApp({
   name: "bridge-route-pinger",
-  version: "0.1.0",
+  version: "1.0.0",
   description: "List viable bridge routes and live fee/time quotes for token transfers",
 });
 
 addEntrypoint({
   key: "bridge",
   description: "Get bridge routes with fee and time estimates for a token transfer",
+  price: process.env.DEFAULT_PRICE ?? "0.01",
   input: z.object({
     token: z.string().describe("Token symbol to bridge (e.g., USDC)"),
     amount: z.string().describe("Amount to bridge in raw units (e.g., 1000000 for 1 USDC)"),
     fromChain: z.string().describe("Source chain name (e.g., ethereum)"),
     toChain: z.string().describe("Destination chain name (e.g., arbitrum)"),
   }),
-  async handler({ input }) {
+  async handler({ input }: { input: any }) {
     const token = input.token.toUpperCase();
     const amount = input.amount;
     const fromChain = input.fromChain.toLowerCase();
@@ -118,27 +118,7 @@ addEntrypoint({
   },
 });
 
-app.get("/health", (c) => c.json({ ok: true, version: "0.1.0" }));
-
-// x402 payment middleware for production
-if (process.env.NODE_ENV !== "test") {
-  const pricing = process.env.X402_PRICING || "0.01";
-  const asset = process.env.X402_ASSET || "USDC";
-  const network = process.env.X402_NETWORK || "base";
-  const receiver = process.env.X402_RECEIVER_ADDRESS;
-
-  if (receiver) {
-    // Type cast to avoid Hono version mismatch between agent-kit and x402-hono
-    const mw = paymentMiddleware(receiver as `0x${string}`, {
-      price: pricing,
-      network,
-      config: {
-        asset: process.env.X402_ASSET || "USDC",
-      } as never,
-    });
-    app.use("/entrypoints/*", mw as never);
-  }
-}
+app.get("/health", (c: any) => c.json({ ok: true, version: "1.0.0" }));
 
 export default app;
 export { app };

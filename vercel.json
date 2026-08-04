@@ -1,21 +1,9 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "server.js",
-      "use": "@vercel/node"
-    }
+    { "src": "dist/src/index.js", "use": "@vercel/node" }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "server.js"
-    }
-  ],
-  "env": {
-    "X402_RECEIVER_ADDRESS": "@x402-receiver-address",
-    "X402_PRICING": "@x402-pricing",
-    "X402_ASSET": "@x402-asset",
-    "X402_NETWORK": "@x402-network"
-  }
+    { "src": "/(.*)", "dest": "dist/src/index.js" }
+  ]
 }
